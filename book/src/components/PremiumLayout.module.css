@@ -1,8 +1,0 @@
-/* book/src/components/PremiumLayout.module.css */
-/* Minimal CSS for the wrapper itself, as most styling comes from custom.css */
-
-.premiumLayout {
-  width: 100%;
-  padding: 1rem;
-  /* Add any specific layout wrapper styles here if needed */
-}

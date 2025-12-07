@@ -1,8 +1,0 @@
-{
-  "label": "ROS 2 Communication Mechanisms",
-  "position": 2,
-  "link": {
-    "type": "generated-index",
-    "description": "Exploring topics, services, actions, and parameters in ROS 2."
-  }
-}
