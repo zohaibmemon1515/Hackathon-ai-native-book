@@ -1,0 +1,351 @@
+/**
+ * Any CSS you add here will be applied to all pages of your Docusaurus site.
+ */
+
+/* Define Core Premium Theme Variables */
+:root {
+  /* Colors */
+  --color-dark-bg: #0A192F; /* Deep Navy Blue (Primary Background) */
+  --color-card-bg: #112240; /* Slightly lighter Navy (Surface/Card Background) */
+  --color-text-primary: #CCD6F6; /* Light Gray/Blue (Main Text) */
+  --color-text-secondary: #8892B0; /* Muted Gray/Blue (Subtitle/Description) */
+  --color-accent-a: #64FFDA; /* Primary Highlight: Bright Cyan/Teal */
+  --color-accent-b: #F97316; /* Secondary Highlight: Bright Orange */
+  
+  /* Docusaurus Infima Overrides */
+  --ifm-color-primary: var(--color-accent-a);
+  --ifm-color-primary-dark: #4CFFC3;
+  --ifm-color-primary-darker: #33CCA9;
+  --ifm-color-primary-darkest: #1B6655;
+  --ifm-background-color: var(--color-dark-bg);
+  --ifm-background-surface-color: var(--color-card-bg);
+  --ifm-font-color-base: var(--color-text-primary);
+  --ifm-heading-color: var(--color-text-primary);
+  --ifm-link-color: var(--color-accent-a);
+  --ifm-link-hover-color: var(--ifm-color-primary-dark);
+  --ifm-hover-overlay: rgba(100, 255, 218, 0.05);
+
+  /* Fonts */
+  --ifm-font-family-base: 'Inter', sans-serif;
+  --ifm-font-family-monospace: 'Fira Code', monospace;
+
+  /* Shadows & Glows */
+  --shadow-card: 0 10px 30px rgba(2, 12, 27, 0.7);
+  --shadow-glow-a: 0 0 15px rgba(100, 255, 218, 0.6); /* Teal Glow */
+  --shadow-glow-b: 0 0 15px rgba(249, 115, 22, 0.6); /* Orange Glow */
+
+  /* --- NEW ROBOTICS VARIABLES --- */
+  --color-grid-line: rgba(136, 146, 176, 0.15); /* Faint Grid Line */
+}
+
+/* --- Premium Micro Details & Accessibility --- */
+
+/* Branded text selection color */
+::selection {
+    background: var(--color-accent-a);
+    color: var(--color-dark-bg);
+}
+
+/* Custom, sleek scrollbar for premium dark mode look */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-dark-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-card-bg);
+  border-radius: 5px;
+  border: 2px solid var(--color-dark-bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-a);
+}
+
+/* High contrast focus states (Uses Orange for visibility against dark BG) */
+a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--color-accent-b);
+    outline-offset: 3px;
+    border-radius: 5px;
+}
+
+/* --- Global Typography & Structure --- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--ifm-font-family-monospace);
+  font-weight: 700;
+  color: var(--ifm-heading-color);
+  letter-spacing: 0.5px;
+}
+
+/* Utility Class: Text Gradient for stunning headings */
+.text-gradient {
+    background: linear-gradient(90deg, var(--color-accent-a), var(--ifm-color-primary-darker));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 2px rgba(100, 255, 218, 0.5));
+}
+
+/* --- NAVBAR (Holographic/Glass Effect) --- */
+.navbar {
+    /* Subtle background blur and transparency */
+    background-color: rgba(10, 25, 47, 0.85); 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    /* Border on the bottom with a slight teal glow */
+    border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    /* --- ROBOTICS ENHANCEMENT: Pulsing Navbar Icon/Logo --- */
+    animation: subtleGlowPulse 4s infinite ease-in-out;
+}
+
+@keyframes subtleGlowPulse {
+    0%, 100% { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); }
+    50% { box-shadow: 0 5px 25px rgba(100, 255, 218, 0.15); }
+}
+
+
+.navbar__brand {
+    font-weight: 800;
+    color: var(--color-text-primary) !important;
+}
+
+/* --- CODE BLOCKS (The core of documentation) --- */
+.theme-code-block {
+    /* Slightly less dark background than card bg for distinction */
+    background-color: #0d1e3a; 
+    border-radius: 10px;
+    /* Subtle accent border */
+    border-left: 3px solid var(--color-accent-a); 
+    /* Soft shadow/glow */
+    box-shadow: 0 0 10px rgba(100, 255, 218, 0.1); 
+    padding: 1rem 0;
+    /* --- ROBOTICS ENHANCEMENT: Dashed Terminal Border --- */
+    border: 1px dashed var(--color-grid-line);
+    border-left: 3px solid var(--color-accent-a); /* Keep primary accent */
+}
+.theme-code-block__title {
+    /* Robotics enhancement for title: Monospaced, highlighted */
+    font-family: var(--ifm-font-family-monospace);
+    font-weight: 500;
+    background-color: #112240;
+    color: var(--color-accent-a);
+    padding: 0.5rem 1rem 0.5rem calc(1rem - 3px);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom: 1px solid rgba(100, 255, 218, 0.3);
+}
+
+/* --- HERO SECTION --- */
+.heroBanner {
+  background: linear-gradient(145deg, var(--color-dark-bg) 30%, #112240); 
+  padding: 150px 20px 100px 20px;
+  border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+  position: relative;
+  overflow: hidden;
+
+  /* --- ROBOTICS ENHANCEMENT: Subtle background data grid --- */
+  background-image: linear-gradient(to right, var(--color-grid-line) 1px, transparent 1px),
+                    linear-gradient(to bottom, var(--color-grid-line) 1px, transparent 1px);
+  background-size: 50px 50px; /* Adjust grid size */
+  background-position: -1px -1px;
+}
+
+.heroTitle {
+  font-size: 4.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  /* --- ROBOTICS ENHANCEMENT: Text Shadow for a glowing display effect --- */
+  text-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+}
+
+.heroSubtitle {
+  font-size: 1.6rem;
+  color: var(--color-text-secondary);
+  font-weight: 400;
+  margin-top: 1.5rem;
+}
+
+/* Robot Illustration Enhancement */
+.robot-illustration {
+  /* Using Orange accent for the glow effect on the robot to introduce the secondary color */
+  filter: grayscale(100%) brightness(150%) drop-shadow(0 0 15px var(--color-accent-b)); 
+  animation: subtlePulse 8s infinite ease-in-out;
+}
+
+@keyframes subtlePulse {
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.005); opacity: 0.4; }
+}
+
+
+/* --- PREMIUM BUTTONS --- */
+.button--lg {
+  padding: 14px 35px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border-radius: 8px;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Primary CTA Button (Teal Glow) */
+.button-cta-primary {
+  background-color: var(--color-accent-a);
+  color: var(--color-dark-bg);
+  border: 1px solid var(--color-accent-a);
+  box-shadow: 0 4px 15px rgba(100, 255, 218, 0.4);
+}
+
+.button-cta-primary:hover {
+  background-color: var(--color-accent-a);
+  box-shadow: 0 8px 30px rgba(100, 255, 218, 0.8), 0 0 40px var(--color-accent-a); 
+  transform: translateY(-4px) scale(1.02);
+}
+
+/* Secondary Button (Outline/Ghost) (Using Teal) */
+.button-cta-secondary {
+  background-color: transparent;
+  color: var(--color-accent-a);
+  border: 2px solid var(--color-accent-a);
+  /* --- ROBOTICS ENHANCEMENT: Subtle button pulse on hover --- */
+  transition: all 0.3s ease;
+}
+
+.button-cta-secondary:hover {
+  background-color: rgba(100, 255, 218, 0.15); 
+  color: var(--color-accent-a);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(100, 255, 218, 0.3);
+}
+
+/* --- FEATURE CARDS --- */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+  margin-top: 5rem;
+}
+
+.featureCard {
+  background-color: var(--color-card-bg);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2), var(--shadow-card); 
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid rgba(100, 255, 218, 0.05);
+  position: relative;
+  /* --- ROBOTICS ENHANCEMENT: Faint corner accents (like a system module) --- */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border-top: 2px solid var(--color-accent-a);
+    border-left: 2px solid var(--color-accent-a);
+    border-top-left-radius: 14px;
+    opacity: 0.5;
+  }
+}
+
+/* Base hover color is Teal */
+.featureCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(2, 12, 27, 0.9), 0 0 15px var(--color-accent-a);
+  border-color: var(--color-accent-a);
+}
+
+/* Alternate the accent color to Orange for visual dynamism */
+.features-grid .featureCard:nth-child(2n) {
+    border-color: rgba(249, 115, 22, 0.05);
+}
+
+/* Ensure the Orange cards also have an orange corner accent */
+.features-grid .featureCard:nth-child(2n)::before {
+    border-color: var(--color-accent-b);
+}
+
+.features-grid .featureCard:nth-child(2n) h3 {
+    color: var(--color-accent-b); /* Orange Heading */
+    border-bottom: 2px solid var(--color-accent-b); /* Orange Underline */
+}
+
+/* Ensure the Orange cards also glow orange on hover */
+.features-grid .featureCard:nth-child(2n):hover {
+    box-shadow: 0 20px 40px rgba(2, 12, 27, 0.9), 0 0 15px var(--color-accent-b);
+    border-color: var(--color-accent-b);
+}
+
+.featureCard h3 {
+  font-size: 1.5rem;
+  /* Default heading is Teal, overridden by nth-child */
+  color: var(--color-accent-a);
+  border-bottom: 2px solid var(--color-accent-a);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+
+/* --- FINAL CTA BANNER --- */
+.cta-banner {
+    /* FIXED: Strong Orange Gradient Reinstated */
+    background: linear-gradient(145deg, var(--color-dark-bg) 30%, #112240); 
+    padding: 80px 20px;
+    text-align: center;
+    color: white;
+    /* Enhanced box shadow with a blend of orange and dark */
+    
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-banner h2 {
+    color: white;
+    font-size: 2.5rem;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+/* CTA Button against Orange background */
+.cta-banner .button-cta-primary {
+    background-color: white !important;
+    color: var(--color-dark-bg) !important;
+    border-color: white !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.cta-banner .button-cta-primary:hover {
+    background-color: #F0F0F0 !important;
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+}
+
+/* --- Docusaurus Sidebar/TOC (For a 'Data Readout' look) --- */
+
+/* Primary Sidebar Container */
+.docSidebarContainer, .tableOfContents {
+    background-color: var(--color-dark-bg); /* Match main background */
+    border-right: 1px solid var(--color-grid-line);
+}
+
+/* Sidebar Headings */
+.menu__link--active, .menu__list-item-collapsible--active {
+    background-color: rgba(100, 255, 218, 0.1);
+    border-right: 3px solid var(--color-accent-a);
+    font-weight: 700;
+}
+
+/* Sidebar Links */
+.menu__link {
+    font-family: var(--ifm-font-family-monospace);
+    color: var(--color-text-secondary);
+    padding: 0.5rem 1rem;
+    transition: all 0.2s;
+}
+
+.menu__link:hover {
+    color: var(--color-accent-a);
+    background-color: rgba(100, 255, 218, 0.05);
+}

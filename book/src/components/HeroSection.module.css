@@ -1,0 +1,106 @@
+/* book/src/components/HeroSection.module.css */
+
+.heroBanner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background-color: var(--ifm-color-primary-darkest);
+  color: var(--ifm-color-white);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 5px solid var(--ifm-color-primary); /* Futuristic line */
+}
+
+@media screen and (min-width: 996px) {
+  .heroBanner {
+    flex-direction: row;
+    justify-content: space-around;
+    text-align: left;
+  }
+}
+
+.heroContent {
+  z-index: 1;
+  max-width: 600px;
+  margin-bottom: 2rem;
+}
+
+@media screen and (min-width: 996px) {
+  .heroContent {
+    margin-bottom: 0;
+    margin-right: 2rem;
+  }
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, var(--ifm-color-primary) 0%, var(--ifm-color-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.heroTagline {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: var(--ifm-color-gray-300);
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+@media screen and (min-width: 996px) {
+  .buttons {
+    justify-content: flex-start;
+  }
+}
+
+.heroImageContainer {
+  position: relative;
+  width: 300px; /* Adjust as needed */
+  height: 300px; /* Adjust as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 15px var(--ifm-color-primary)); /* Glow effect */
+}
+
+/* Add some futuristic background effects */
+.heroBanner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at top left, rgba(var(--ifm-color-primary-rgb), 0.2) 0%, transparent 50%);
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.heroBanner::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at bottom right, rgba(var(--ifm-color-secondary-rgb), 0.2) 0%, transparent 50%);
+  opacity: 0.3;
+  z-index: 0;
+}
