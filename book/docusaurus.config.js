@@ -11,7 +11,7 @@ const config = {
   favicon: "img/favicon.ico",
 
   url: "https://zohaibmemon1515.github.io", 
-  baseUrl: "/Hackathon-ai-native-book/book/", 
+  baseUrl: "/Hackathon-ai-native-book/", 
   organizationName: "zohaibmemon1515", 
   projectName: "Hackathon-ai-native-book", 
 

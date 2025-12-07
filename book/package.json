@@ -7,7 +7,7 @@
     "start": "npx docusaurus start",
     "build": "npx docusaurus build",
     "swizzle": "npx docusaurus swizzle",
-    "deploy": "npx docusaurus build && gh-pages -d build",
+    "deploy": "npx docusaurus deploy && gh-pages -d build --add",
     "clear": "npx docusaurus clear",
     "serve": "npx docusaurus serve",
     "write-translations": "docusaurus write-translations",
