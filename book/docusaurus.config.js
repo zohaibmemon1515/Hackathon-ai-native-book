@@ -10,12 +10,10 @@ const config = {
     "A hands-on guide to building AI agents that interact with the physical world",
   favicon: "img/favicon.ico",
 
-  url: "https://zohaibmemon1515.github.io", 
-  baseUrl: "/Hackathon-ai-native-book/", 
-  organizationName: "zohaibmemon1515", 
-  projectName: "Hackathon-ai-native-book", 
-
-
+  url: "https://zohaibmemon1515.github.io",
+  baseUrl: "/Hackathon-ai-native-book/",
+  organizationName: "zohaibmemon1515",
+  projectName: "Hackathon-ai-native-book",
 
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
