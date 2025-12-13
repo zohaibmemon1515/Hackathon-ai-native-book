@@ -2,150 +2,188 @@ import React from "react";
 import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import "../css/custom.css"; // The central CSS file for all styles
+import "../css/custom.css";
 
+/* =========================
+   FEATURE DOMAINS
+========================= */
+const features = [
+  {
+    title: "Humanoid Robotics Engineering",
+    description:
+      "Design and control full-scale humanoid robots with a focus on balance, locomotion, manipulation, and safe human interaction.",
+    color: "accent-a",
+  },
+  {
+    title: "Embodied Intelligence Systems",
+    description:
+      "Build AI agents that perceive, reason, and act within physical environments using sensors, world models, and decision policies.",
+    color: "accent-b",
+  },
+  {
+    title: "Applied Robotics Projects",
+    description:
+      "Work on industry-grade robotics projects spanning simulation, reinforcement learning, and real hardware deployment.",
+    color: "accent-a",
+  },
+  {
+    title: "Advanced Control & Agents",
+    description:
+      "Master robotics foundations including kinematics, dynamics, optimal control, MPC, and multi-agent coordination systems.",
+    color: "accent-b",
+  },
+];
 
+/* =========================
+   AGENT FRAMEWORK
+========================= */
+const missionSections = [
+  {
+    icon: "🧠",
+    title: "Agent Architecture & Reasoning",
+    text:
+      "Design intelligent agent stacks combining perception, planning, memory, and decision-making — from classical pipelines to LLM-augmented systems.",
+  },
+  {
+    icon: "🌍",
+    title: "Simulation-to-Reality Transfer",
+    text:
+      "Bridge the sim-to-real gap using domain randomization, sensor modeling, and hardware-aware control techniques.",
+  },
+  {
+    icon: "⚡",
+    title: "Real-Time Control & Dynamics",
+    text:
+      "Implement kinematics, dynamics, and optimal control to enable stable, agile, and responsive robotic motion.",
+  },
+];
+
+/* =========================
+   WHO THIS IS FOR
+========================= */
+const audience = [
+  {
+    title: "Robotics Engineers",
+    text:
+      "Engineers looking to design, control, and deploy real-world robotic systems using modern AI techniques.",
+  },
+  {
+    title: "AI Researchers & Students",
+    text:
+      "Learners aiming to understand embodied intelligence, agent-based systems, and robotics research foundations.",
+  },
+  {
+    title: "Advanced Developers",
+    text:
+      "Developers transitioning from software AI into physical systems, robotics simulation, and control pipelines.",
+  },
+];
 
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
 
-  // The style is now minimal, relying on CSS variables defined in custom.css
   return (
     <Layout
       title="Physical AI & Humanoid Robotics"
-      description="Build intelligent agents and humanoid robots with hands-on projects"
-      // No inline styles needed here for background, handled by global CSS
+      description="A deep-technical platform for building intelligent embodied agents and humanoid robots"
     >
-      {/* HERO SECTION */}
+      {/* ================= HERO ================= */}
       <header className="heroBanner">
-        {/* Subtle background glow/overlay (keep inline for specific positioning) */}
-        <div
-            style={{
-                position: 'absolute',
-                top: '-50px',
-                left: '-50px',
-                width: '200px',
-                height: '200px',
-                background: 'var(--color-accent-a)',
-                opacity: 0.1,
-                borderRadius: '50%',
-                filter: 'blur(100px)',
-                zIndex: 0,
-            }}
-        />
 
-        {/* Robot illustration on the right */}
-        <img
-          src="/img/robot-illustration.png" 
-          alt="Robot Illustration"
-          className="robot-illustration"
-          style={{
-            position: "absolute",
-            right: 0,
-            bottom: 0,
-            maxHeight: "90%", 
-            pointerEvents: "none",
-            zIndex: 0,
-          }}
-        />
-
-        <div className="container" style={{ position: "relative", zIndex: 1 }}>
-          <h1 className="heroTitle">
+        <div className="container hero-content-wrapper">
+          <h1 className="heroTitle text-gradient">
             Physical AI & Humanoid Robotics
           </h1>
+
           <p className="heroSubtitle">
-            Master Physical AI, Robotics & Humanoid Systems — Step by Step
+            A deep-technical learning platform for building{" "}
+            <strong>intelligent embodied agents</strong> and{" "}
+            <strong>human-scale robotic systems</strong> — from simulation to
+            real-world deployment.
           </p>
 
-          <div className="buttons" style={{ marginTop: '2.5rem' }}>
-            {/* Primary Button */}
-            <Link
-              className="button button--lg button-cta-primary"
-              to="/docs/category/introduction"
-              style={{ marginRight: "1rem" }}
-            >
-              Start Learning →
-            </Link>
-            
-            {/* Secondary Button */}
-            <Link
-              className="button button--lg button-cta-secondary"
-              to="/blog"
-            >
-              Visit Blog
-            </Link>
-          </div>
+          <Link
+            className="button button-cta-primary"
+            to="/docs/category/introduction"
+          >
+            Begin the Curriculum →
+          </Link>
         </div>
       </header>
 
-      {/* FEATURES SECTION */}
       <main>
-        <div className="container" style={{ padding: '100px 20px' }}>
-            <h2 style={{ 
-                textAlign: 'center', 
-                marginBottom: '5rem', 
-                fontSize: '2.8rem', 
-            }}>
-                Key Focus Areas
+        {/* ================= CORE DOMAINS ================= */}
+        <section className="section-padding">
+          <h2 className="section-title text-gradient">
+            Core Research & Engineering Domains
+          </h2>
+
+          <div className="features-grid">
+            {features.map((feature, idx) => (
+              <div
+                key={idx}
+                className={`featureCard featureCard--${feature.color}`}
+              >
+                <h3>{feature.title}</h3>
+                <p className="text-secondary-color">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ================= AGENT FRAMEWORK ================= */}
+        <section className="mission-section">
+          <div className="container">
+            <h2 className="section-title white-text">
+              The Agent Development Framework
             </h2>
-            <section className="features-grid">
-              {/* Feature Card 1 */}
-              <div className="featureCard">
-                <h3>🤖 Humanoid Robotics</h3>
-                <p style={{ color: 'var(--color-text-secondary)' }}>
-                  Learn to control, program, and simulate **humanoid robots** for
-                  real-world AI applications.
-                </p>
-              </div>
 
-              {/* Feature Card 2 */}
-              <div className="featureCard">
-                <h3>🧠 Embodied Intelligence</h3>
-                <p style={{ color: 'var(--color-text-secondary)' }}>
-                  Understand how AI agents perceive, reason, and act in the **physical
-                  world** with advanced sensors.
-                </p>
-              </div>
-
-              {/* Feature Card 3 */}
-              <div className="featureCard">
-                <h3>⚙️ Hands-On Projects</h3>
-                <p style={{ color: 'var(--color-text-secondary)' }}>
-                  Build practical projects and capstones with **step-by-step**
-                  tutorials in simulation and hardware.
-                </p>
-              </div>
-
-              {/* Feature Card 4 */}
-              <div className="featureCard">
-                <h3>📚 Advanced Learning</h3>
-                <p style={{ color: 'var(--color-text-secondary)' }}>
-                  Explore advanced AI topics, robotics algorithms, and system **integration** strategies.
-                </p>
-              </div>
-            </section>
-        </div>
-        
-
-        {/* --- NEW SECTION: FINAL CTA --- */}
-        <section className="cta-banner">
-            <div className="container">
-                <h2>Ready to Step into the Future of Robotics?</h2>
-                <p style={{ fontSize: '1.2rem', margin: '1rem auto 2rem', color: '#FFF8E1' }}>
-                    Start your journey with the most comprehensive guide to Physical AI today.
-                </p>
-                <Link
-                    className="button button--lg button-cta-primary"
-                    to="/docs/category/introduction"
-                    style={{ 
-                        backgroundColor: 'white', // Overrides primary CTA color for contrast on orange background
-                        color: 'var(--color-dark-bg)',
-                        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)' 
-                    }}
-                >
-                    Enroll Now →
-                </Link>
+            <div className="mission-grid">
+              {missionSections.map((item, index) => (
+                <div key={index} className="mission-card">
+                  <span className="mission-icon">{item.icon}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                </div>
+              ))}
             </div>
+          </div>
+        </section>
+
+        {/* ================= WHO THIS IS FOR ================= */}
+        <section className="section-padding">
+          <h2 className="section-title text-gradient">
+            Who This Platform Is For
+          </h2>
+
+          <div className="features-grid">
+            {audience.map((item, index) => (
+              <div key={index} className="featureCard">
+                <h3>{item.title}</h3>
+                <p className="text-secondary-color">{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ================= CTA ================= */}
+        <section className="cta-banner">
+          <div className="container">
+            <h2>Build the Next Generation of Intelligent Machines</h2>
+            <p>
+              Follow a structured, hands-on curriculum focused on real robotics
+              systems, modern AI agents, and practical engineering workflows.
+            </p>
+
+            <Link
+              className="button button-cta-inverted"
+              to="/docs/category/introduction"
+            >
+              Enroll in the Program →
+            </Link>
+          </div>
         </section>
       </main>
     </Layout>
