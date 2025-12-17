@@ -47,11 +47,8 @@ const config = {
   themeConfig: {
     image: "img/docusaurus-social-card.jpg",
     navbar: {
-      title: "Physical AI Book",
-      logo: {
-        alt: "Physical AI Book Logo",
-        src: "static/img/Logo.png",
-      },
+      title: "🧠 Codisfy Robotics",
+      
       items: [
         {
           type: "docSidebar",
