@@ -23,7 +23,7 @@ app.include_router(chat.router, prefix="/api")
 @app.get("/")
 async def read_root():
     logger.info("Root endpoint accessed.")
-    return {"message": "RAG Chatbot API is running!"}
+    return {"message": "RAG Chatbot API is start!"}
 
 @app.on_event("startup")
 async def startup():
