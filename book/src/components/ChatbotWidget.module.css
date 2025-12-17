@@ -1,193 +1,248 @@
-/* book/src/components/ChatbotWidget.module.css */
+/* ===============================
+   THEME VARIABLES (Frontend Match)
+================================ */
+:root {
+  --bg-main: #030d18;
+  --bg-card: #0d1c2b;
+  --bg-glass: rgba(13, 28, 43, 0.92);
 
+  --text-primary: #e6ecff;
+  --text-secondary: #a8b4d4;
+
+  --accent: #00a6ff;
+  --accent-soft: rgba(0, 166, 255, 0.35);
+  --accent-glow: rgba(0, 166, 255, 0.55);
+}
+
+/* ===============================
+   GLOBAL
+================================ */
+.chatContainer * {
+  font-family: Inter, Segoe UI, system-ui, sans-serif;
+  box-sizing: border-box;
+}
+
+/* ===============================
+   TOGGLE BUTTON (Subtle Premium)
+================================ */
 .toggleButton {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 60px;
-  height: 60px;
+  bottom: 28px;
+  right: 28px;
+  width: 62px;
+  height: 62px;
   border-radius: 50%;
-  background-color: var(--ifm-color-primary);
-  color: white;
+  background: linear-gradient(135deg, #00a6ff, #0077ff);
+  color: #fff;
+  font-size: 26px;
   border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(var(--ifm-color-primary-rgb), 0.4);
-  z-index: 1000;
-  transition: background-color 0.3s ease;
+  z-index: 9998;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7);
+  transition: all 0.25s ease;
 }
 
 .toggleButton:hover {
-  background-color: var(--ifm-color-primary-dark);
+  transform: scale(1.08);
+  box-shadow: 0 15px 45px var(--accent-glow);
 }
 
-.toggleButton img {
-  width: 70%;
-  height: 70%;
-}
-
-.chatbotContainer {
+/* ===============================
+   CHAT CONTAINER
+================================ */
+.chatContainer {
   position: fixed;
-  bottom: 90px;
-  right: 20px;
-  width: 380px;
-  height: 500px;
-  background-color: var(--ifm-background-surface-color);
-  border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  bottom: 50%;
+  right: 28px;
+  width: 420px;
+  height: 82vh;
+  transform: translateY(50%) scale(0.95);
+  background: var(--bg-glass);
+  backdrop-filter: blur(35px);
+  border-radius: 22px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  z-index: 999;
-  border: 1px solid rgba(var(--ifm-color-primary-rgb), 0.3);
-  font-family: 'Inter', sans-serif;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 35px 90px rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(0, 166, 255, 0.18);
+  z-index: 10002;
+  transition: all 0.45s cubic-bezier(0.2, 0.9, 0.3, 1);
 }
 
-@media (max-width: 480px) {
-  .chatbotContainer {
-    width: 90%;
-    right: 5%;
-    left: 5%;
-    height: 70vh;
-    bottom: 80px;
-  }
+.chatContainer.open {
+  opacity: 1;
+  transform: translateY(50%) scale(1);
+  pointer-events: auto;
 }
 
-.chatbotHeader {
+/* ===============================
+   HEADER
+================================ */
+.chatHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  background-color: var(--ifm-color-primary-darkest);
-  color: white;
-  font-weight: bold;
-  border-bottom: 1px solid var(--ifm-color-primary);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  padding: 18px 22px;
+  font-size: 17px;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(0, 166, 255, 0.25);
 }
 
-.chatbotHeader .closeButton {
+.chatHeader h3 {
+  margin: 0;
+  letter-spacing: 0.3px;
+}
+
+.chatHeader .closeButton {
   background: none;
   border: none;
-  color: white;
-  font-size: 1.2rem;
+  color: var(--text-secondary);
+  font-size: 26px;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: all 0.25s ease;
 }
 
-.chatbotHeader .closeButton:hover {
-  color: var(--ifm-color-secondary);
+.chatHeader .closeButton:hover {
+  color: var(--accent);
+  transform: rotate(90deg);
 }
 
-.messagesContainer {
-  flex-grow: 1;
-  padding: 1rem;
+/* ===============================
+   BODY
+================================ */
+.chatBody {
+  flex: 1;
+  padding: 22px;
   overflow-y: auto;
+  color: var(--text-primary);
+  background: transparent;
+}
+
+/* Scrollbar */
+.chatBody::-webkit-scrollbar {
+  width: 6px;
+}
+.chatBody::-webkit-scrollbar-thumb {
+  background: var(--accent-soft);
+  border-radius: 4px;
+}
+
+/* ===============================
+   MESSAGES
+================================ */
+.messageWrapper {
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  background-color: var(--ifm-background-color);
+  margin: 10px 0;
+}
+
+.messageWrapper.user {
+  justify-content: flex-end;
+}
+.messageWrapper.assistant {
+  justify-content: flex-start;
 }
 
 .message {
-  max-width: 80%;
-  padding: 0.7rem 1rem;
+  padding: 14px 18px;
   border-radius: 18px;
-  line-height: 1.4;
+  max-width: 78%;
+  line-height: 1.6;
+  font-size: 15px;
 }
 
-.userMessage {
-  align-self: flex-end;
-  background-color: var(--ifm-color-primary-light);
-  color: var(--ifm-color-white);
-  border-bottom-right-radius: 4px;
+.message.user {
+  background: linear-gradient(135deg, #00a6ff, #0077ff);
+  color: #fff;
+  border-bottom-right-radius: 6px;
 }
 
-.botMessage {
-  align-self: flex-start;
-  background-color: var(--ifm-background-surface-color);
-  color: var(--ifm-font-color-base);
-  border: 1px solid rgba(var(--ifm-color-primary-rgb), 0.1);
-  border-bottom-left-radius: 4px;
+.message.assistant {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  border-bottom-left-radius: 6px;
 }
 
-.loadingMessage {
+/* ===============================
+   INPUT
+================================ */
+.inputForm {
   display: flex;
-  align-self: flex-start;
-  background-color: var(--ifm-background-surface-color);
-  border-radius: 18px;
-  padding: 0.7rem 1rem;
-}
-.loadingDot {
-  width: 8px;
-  height: 8px;
-  background-color: var(--ifm-color-primary);
-  border-radius: 50%;
-  margin: 0 2px;
-  animation: bounce 1.2s infinite ease-in-out;
-}
-.loadingDot:nth-child(2) {
-  animation-delay: -0.4s;
-}
-.loadingDot:nth-child(3) {
-  animation-delay: -0.8s;
+  gap: 12px;
+  padding: 16px;
+  background: var(--bg-card);
+  border-top: 1px solid rgba(0, 166, 255, 0.2);
 }
 
-@keyframes bounce {
-  0%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-8px); }
-}
-
-
-.inputContainer {
-  display: flex;
-  padding: 1rem;
-  border-top: 1px solid var(--ifm-color-primary-darkest);
-  background-color: var(--ifm-background-surface-color);
-}
-
-.inputContainer input {
-  flex-grow: 1;
-  border: 1px solid var(--ifm-color-primary-light);
-  border-radius: 20px;
-  padding: 0.5rem 1rem;
-  margin-right: 0.5rem;
-  background-color: var(--ifm-background-color);
-  color: var(--ifm-font-color-base);
-  font-size: 0.9rem;
-}
-
-.inputContainer input:focus {
+.chatInput {
+  flex: 1;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid transparent;
+  border-radius: 14px;
+  color: #fff;
+  font-size: 15px;
+  caret-color: var(--accent);
   outline: none;
-  border-color: var(--ifm-color-secondary);
-  box-shadow: 0 0 0 2px rgba(var(--ifm-color-secondary-rgb), 0.3);
+  transition: all 0.25s ease;
 }
 
-.inputContainer button {
-  background-color: var(--ifm-color-primary);
-  color: white;
+.chatInput:focus {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--accent-soft);
+  box-shadow: 0 0 0 3px rgba(0, 166, 255, 0.15);
+}
+
+.chatInput::placeholder {
+  color: var(--text-secondary);
+}
+
+/* ===============================
+   SEND BUTTON
+================================ */
+.sendBtn {
+  padding: 14px 22px;
+  border-radius: 14px;
   border: none;
-  border-radius: 20px;
-  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #00a6ff, #0077ff);
+  color: #fff;
+  font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.25s ease;
 }
 
-.inputContainer button:hover {
-  background-color: var(--ifm-color-primary-dark);
+.sendBtn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px var(--accent-glow);
 }
 
-.inputContainer button:disabled {
-  background-color: var(--ifm-color-gray-500);
+.sendBtn:disabled {
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
-.selectionHint {
-  font-size: 0.75rem;
-  color: var(--ifm-color-gray-500);
+/* ===============================
+   STATES
+================================ */
+.loading {
   text-align: center;
-  padding-bottom: 0.5rem;
-  background-color: var(--ifm-background-surface-color);
-  border-top: 1px dashed rgba(var(--ifm-color-primary-rgb), 0.1);
+  color: var(--accent);
+  font-style: italic;
+  padding: 18px;
+}
+
+.error {
+  text-align: center;
+  color: #ff6b6b;
+  padding: 18px;
+}
+
+.empty {
+  text-align: center;
+  color: var(--text-secondary);
+  opacity: 0.7;
+  padding: 40px;
 }

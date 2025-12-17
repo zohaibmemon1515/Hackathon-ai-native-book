@@ -208,3 +208,11 @@ Wait for consent; never auto-create ADRs. Group related decisions (stacks, authe
 
 ## Code Standards
 See `.specify/memory/constitution.md` for code quality, testing, performance, security, and architecture principles.
+
+## Active Technologies
+- Python 3.11+ + FastAPI, OpenAI Agent SDK, Cohere, Qdrant-client, Neon-Python-Driver (2-integrated-rag-chatbot)
+- Neon Serverless Postgres (for chat history/sessions), Qdrant Cloud (for vector embeddings) (2-integrated-rag-chatbot)
+
+## Recent Changes
+- 2-integrated-rag-chatbot: Added Python 3.11+ + FastAPI, OpenAI Agent SDK, Cohere, Qdrant-client, Neon-Python-Driver
+

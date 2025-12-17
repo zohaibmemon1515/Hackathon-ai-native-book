@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+dist/
+*.egg-info/
+*.log
+.env*
+
+# Node.js
+node_modules/
+dist/
+build/
+*.log
+.env*
+
+# Docusaurus
+.docusaurus/
+build/
+
+# Universal
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/

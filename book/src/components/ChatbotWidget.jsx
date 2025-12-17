@@ -1,202 +1,164 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import styles from './ChatbotWidget.module.css'; 
-const ChatbotWidget = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
-  const [sessionId, setSessionId] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef(null);
+import React, { useState, useEffect, useRef } from "react";
+import styles from "./ChatbotWidget.module.css";
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+const ChatbotWidget = ({
+  selectedText,
+  clearSelectedText,
+  initialQuery,
+  clearInitialQuery,
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [conversation, setConversation] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [inputPlaceholder, setInputPlaceholder] = useState(
+    "Type your question..."
+  );
+  const chatBodyRef = useRef(null);
+  const chatInputRef = useRef(null);
+
+  // Auto-scroll
+  useEffect(() => {
+    if (chatBodyRef.current) {
+      chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+    }
+  }, [conversation]);
+
+  // Update placeholder
+  useEffect(() => {
+    setInputPlaceholder(
+      selectedText
+        ? `Ask about "${selectedText.substring(0, 30)}..."`
+        : "Type your question..."
+    );
+  }, [selectedText]);
+
+  // Focus input
+  useEffect(() => {
+    if (isOpen || initialQuery) {
+      setTimeout(() => chatInputRef.current?.focus(), 100);
+    }
+  }, [isOpen, initialQuery]);
+
+  // 🔥 Greeting from SAME agent
+  useEffect(() => {
+    if (isOpen && conversation.length === 0) {
+      const timer = setTimeout(() => {
+        callApi(""); // greeting from agent
+      }, 300); // 300ms delay to allow input to mount
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  // Initial query (text selection etc.)
+  useEffect(() => {
+    if (initialQuery) {
+      setIsOpen(true);
+      setConversation((prev) => [
+        ...prev,
+        { role: "user", content: initialQuery },
+      ]);
+      callApi(initialQuery);
+      clearInitialQuery?.();
+    }
+  }, [initialQuery]);
+
+  const toggleWidget = () => {
+    setIsOpen((prev) => !prev);
+    if (!isOpen) setTimeout(() => chatInputRef.current?.focus(), 100);
   };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  useEffect(() => {
-    // Basic session management
-    let storedSessionId = localStorage.getItem('chatbotSessionId');
-    if (!storedSessionId) {
-      storedSessionId = `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-      localStorage.setItem('chatbotSessionId', storedSessionId);
-    }
-    setSessionId(storedSessionId);
-  }, []);
-
-  const sendMessage = async (messageText, highlightedText = null) => {
-    if (!messageText.trim() || isLoading) return;
-
-    const userMessage = { id: messages.length + 1, sender: 'user', text: messageText };
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
-    setInput('');
-    setIsLoading(true);
-
+  const callApi = async (query) => {
+    setLoading(true);
+    setError(null);
     try {
-      // Replace with your actual backend URL
-      const backendUrl = process.env.CHATBOT_BACKEND_URL || 'http://localhost:8000';
-      const response = await fetch(`${backendUrl}/chat`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-Key': process.env.CHATBOT_API_KEY || 'your_fastapi_api_key_here',
-        },
-        body: JSON.stringify({
-          query: messageText,
-          session_id: sessionId,
-          highlighted_text: highlightedText,
-        }),
+      const res = await fetch("http://localhost:8000/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: query }),
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      if (!res.ok) throw new Error("Server error");
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder('utf-8');
-      let botResponseText = '';
-      let isFirstChunk = true;
-
-      while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value);
-        // Assuming SSE format: data: {json_payload}
-
-        const lines = chunk.split('\n\n').filter(line => line.startsWith('data: '));
-
-        for (const line of lines) {
-          const jsonString = line.substring(6); // Remove "data: "
-          if (jsonString === '[DONE]') {
-            setIsLoading(false);
-            return;
-          }
-          const data = JSON.parse(jsonString);
-          if (data.content) {
-            botResponseText += data.content;
-            if (isFirstChunk) {
-              setMessages((prevMessages) => [
-                ...prevMessages,
-                { id: messages.length + 2, sender: 'bot', text: data.content },
-              ]);
-              isFirstChunk = false;
-            } else {
-              setMessages((prevMessages) =>
-                prevMessages.map((msg, index) =>
-                  index === prevMessages.length - 1 ? { ...msg, text: botResponseText } : msg
-                )
-              );
-            }
-          }
-        }
-      }
-    } catch (error) {
-      console.error('Chatbot message send error:', error);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { id: messages.length + 2, sender: 'bot', text: 'Oops! Something went wrong. Please try again.' },
+      const data = await res.json();
+      setConversation((prev) => [
+        ...prev,
+        { role: "assistant", content: data.response },
       ]);
-      setIsLoading(false);
+    } catch (err) {
+      setError(err.message || "Error connecting to AI.");
+      setConversation((prev) => [
+        ...prev,
+        { role: "assistant", content: "Sorry, I cannot answer right now." },
+      ]);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      sendMessage(input);
-    }
+  const handleSend = async (e) => {
+    e.preventDefault();
+    if (!message.trim()) return;
+
+    setConversation((prev) => [...prev, { role: "user", content: message }]);
+    setMessage("");
+    clearSelectedText?.();
+    setTimeout(() => chatInputRef.current?.focus(), 50);
+    await callApi(message);
   };
-
-  // Function to handle "select text + ask"
-  const handleSelection = () => {
-    const selection = window.getSelection();
-    const selectedText = selection ? selection.toString().trim() : '';
-    if (selectedText) {
-      const question = prompt(`Ask a question about the selected text:\n"${selectedText}"`);
-      if (question) {
-        sendMessage(question, selectedText);
-      }
-    }
-  };
-
-  // Example: Listen for a hotkey to trigger selection mode (e.g., Ctrl+S)
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.ctrlKey && e.key === 's') { // Ctrl+S
-        e.preventDefault(); // Prevent browser save dialog
-        handleSelection();
-      }
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, []);
-
 
   return (
     <>
-      <motion.button
-        className={styles.toggleButton}
-        onClick={() => setIsOpen(!isOpen)}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-      >
-        {isOpen ? 'X' : <img src="/img/ai-assistant-icon.svg" alt="AI Assistant" />} {/* AI Assistant Icon */}
-      </motion.button>
+      <button onClick={toggleWidget} className={styles.toggleButton}>
+        {isOpen ? "×" : "💬"}
+      </button>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            className={styles.chatbotContainer}
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 100 }}
-            transition={{ type: 'spring', damping: 15, stiffness: 100 }}
+      <div
+        className={`${styles.chatContainer} ${isOpen ? styles.open : ""}`}
+        onClick={() => chatInputRef.current?.focus()} // click par focus restore
+      >
+        <div className={styles.chatHeader}>
+          <h3>🤖 Codisfy Agent</h3>
+          <button onClick={toggleWidget} className={styles.closeButton}>
+            ×
+          </button>
+        </div>
+
+        <div className={styles.chatBody} ref={chatBodyRef}>
+          {conversation.map((msg, i) => (
+            <div
+              key={i}
+              className={`${styles.messageWrapper} ${styles[msg.role]}`}
+            >
+              <div className={`${styles.message} ${styles[msg.role]}`}>
+                {msg.content}
+              </div>
+            </div>
+          ))}
+          {loading && <div className={styles.loading}>Thinking...</div>}
+          {error && <div className={styles.error}>{error}</div>}
+        </div>
+
+        <form className={styles.inputForm} onSubmit={handleSend}>
+          <input
+            ref={chatInputRef}
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder={inputPlaceholder}
+            className={styles.chatInput}
+            disabled={false} // input always typeable
+          />
+          <button
+            type="submit"
+            disabled={loading && !message.trim()}
+            className={styles.sendBtn}
           >
-            <div className={styles.chatbotHeader}>
-              <span>AI Assistant</span>
-              <button onClick={() => setIsOpen(false)} className={styles.closeButton}>X</button>
-            </div>
-            <div className={styles.messagesContainer}>
-              {messages.map((msg) => (
-                <motion.div
-                  key={msg.id}
-                  className={clsx(styles.message, msg.sender === 'user' ? styles.userMessage : styles.botMessage)}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {msg.text}
-                </motion.div>
-              ))}
-              {isLoading && (
-                <div className={styles.loadingMessage}>
-                  <div className={styles.loadingDot}></div>
-                  <div className={styles.loadingDot}></div>
-                  <div className={styles.loadingDot}></div>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-            <div className={styles.inputContainer}>
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Ask me anything about the book..."
-                disabled={isLoading}
-              />
-              <button onClick={() => sendMessage(input)} disabled={isLoading}>Send</button>
-            </div>
-             <div className={styles.selectionHint}>
-              Highlight text and press Ctrl+S to ask about it.
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            Send
+          </button>
+        </form>
+      </div>
     </>
   );
 };
