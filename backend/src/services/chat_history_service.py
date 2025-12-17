@@ -1,4 +1,5 @@
 import logging
+import json
 from typing import List, Optional
 from uuid import UUID
 from sqlalchemy.future import select
@@ -18,17 +19,21 @@ class ChatHistoryService:
             raise
 
     async def create_session(self, user_id: str, metadata: Optional[dict] = None) -> ChatSession:
-        try:
-            async with AsyncSessionLocal() as session:
-                new_session = ChatSession(user_id=user_id, metadata_=metadata)
+        async with AsyncSessionLocal() as session:
+            try:
+                new_session = ChatSession(
+                    user_id=user_id,
+                    metadata_=json.dumps(metadata) if metadata else None
+                )
                 session.add(new_session)
                 await session.commit()
                 await session.refresh(new_session)
                 logger.info(f"Created new chat session: {new_session.id}")
                 return new_session
-        except Exception:
-            logger.exception(f"Failed to create chat session for user {user_id}")
-            raise RuntimeError("Failed to create chat session")
+            except Exception:
+                await session.rollback()
+                logger.exception(f"Failed to create chat session for user {user_id}")
+                raise RuntimeError("Failed to create chat session")
 
     async def save_message(
         self,
@@ -38,46 +43,47 @@ class ChatHistoryService:
         context_text: Optional[str] = None,
         metadata: Optional[dict] = None
     ) -> ChatMessage:
-        try:
-            async with AsyncSessionLocal() as session:
+        async with AsyncSessionLocal() as session:
+            try:
                 new_message = ChatMessage(
                     session_id=session_id,
                     role=role,
                     content=content,
                     context_text=context_text,
-                    metadata_=metadata
+                    metadata_=json.dumps(metadata) if metadata else None
                 )
                 session.add(new_message)
                 await session.commit()
                 await session.refresh(new_message)
                 logger.info(f"Saved message in session {session_id}, role: {role}")
                 return new_message
-        except Exception:
-            logger.exception(f"Failed to save message in session {session_id}")
-            raise RuntimeError("Failed to save message")
+            except Exception:
+                await session.rollback()
+                logger.exception(f"Failed to save message in session {session_id}")
+                raise RuntimeError("Failed to save message")
 
     async def get_history(self, session_id: UUID) -> List[ChatMessage]:
-        try:
-            async with AsyncSessionLocal() as session:
+        async with AsyncSessionLocal() as session:
+            try:
                 result = await session.execute(
                     select(ChatMessage)
                     .filter(ChatMessage.session_id == session_id)
                     .order_by(ChatMessage.created_at)
                 )
                 return result.scalars().all()
-        except Exception:
-            logger.exception(f"Failed to retrieve history for session {session_id}")
-            return []
+            except Exception:
+                logger.exception(f"Failed to retrieve history for session {session_id}")
+                return []
 
     async def get_session_by_id(self, session_id: UUID) -> Optional[ChatSession]:
-        try:
-            async with AsyncSessionLocal() as session:
+        async with AsyncSessionLocal() as session:
+            try:
                 result = await session.execute(
                     select(ChatSession).filter(ChatSession.id == session_id)
                 )
                 return result.scalars().first()
-        except Exception:
-            logger.exception(f"Failed to retrieve session by ID {session_id}")
-            return None
+            except Exception:
+                logger.exception(f"Failed to retrieve session by ID {session_id}")
+                return None
 
 chat_history_service = ChatHistoryService()
