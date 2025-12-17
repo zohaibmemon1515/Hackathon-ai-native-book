@@ -46,20 +46,16 @@ const ChatbotWidget = ({
     if (isOpen && conversation.length === 0) {
       const timer = setTimeout(() => {
         callApi(""); // greeting from agent
-      }, 300); // 300ms delay to allow input to mount
+      }, 300);
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
 
-  // Initial query (text selection etc.)
+  // Populate input with initialQuery but do NOT send
   useEffect(() => {
     if (initialQuery) {
       setIsOpen(true);
-      setConversation((prev) => [
-        ...prev,
-        { role: "user", content: initialQuery },
-      ]);
-      callApi(initialQuery);
+      setMessage(initialQuery); // populate input
       clearInitialQuery?.();
     }
   }, [initialQuery]);
@@ -73,11 +69,14 @@ const ChatbotWidget = ({
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("https://codisfy-rag-chatbot.onrender.com/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: query }),
-      });
+      const res = await fetch(
+        "https://codisfy-rag-chatbot.onrender.com/api/chat",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: query }),
+        }
+      );
 
       if (!res.ok) throw new Error("Server error");
 
@@ -116,7 +115,7 @@ const ChatbotWidget = ({
 
       <div
         className={`${styles.chatContainer} ${isOpen ? styles.open : ""}`}
-        onClick={() => chatInputRef.current?.focus()} // click par focus restore
+        onClick={() => chatInputRef.current?.focus()}
       >
         <div className={styles.chatHeader}>
           <h3>🤖 Codisfy Agent</h3>
@@ -148,7 +147,7 @@ const ChatbotWidget = ({
             onChange={(e) => setMessage(e.target.value)}
             placeholder={inputPlaceholder}
             className={styles.chatInput}
-            disabled={false} // input always typeable
+            disabled={false}
           />
           <button
             type="submit"

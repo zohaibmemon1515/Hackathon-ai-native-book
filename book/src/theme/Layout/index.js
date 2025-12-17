@@ -35,7 +35,8 @@ export default function LayoutWrapper(props) {
   const clearSelection = useCallback(() => {
     setSelectedText(null);
     setSelectionCoords(null);
-    if (window.getSelection().rangeCount > 0) window.getSelection().removeAllRanges();
+    if (window.getSelection().rangeCount > 0)
+      window.getSelection().removeAllRanges();
   }, []);
 
   const handleMouseUp = useCallback(() => {
@@ -58,7 +59,7 @@ export default function LayoutWrapper(props) {
   const handleAskAI = (e) => {
     e.stopPropagation();
     if (selectedText) {
-      setInitialQuery(selectedText);
+      setInitialQuery(selectedText); // populate input and open chat
       clearSelection();
     }
   };
@@ -67,7 +68,13 @@ export default function LayoutWrapper(props) {
     <>
       <Layout {...props} />
       {selectedText && selectionCoords && (
-        <div style={{ ...selectionMenuStyles, left: selectionCoords.x, top: selectionCoords.y }}>
+        <div
+          style={{
+            ...selectionMenuStyles,
+            left: selectionCoords.x,
+            top: selectionCoords.y,
+          }}
+        >
           <button style={buttonStyles} onClick={handleAskAI}>
             💬 Ask AI about "{selectedText.substring(0, 15)}..."
           </button>
